@@ -1,0 +1,210 @@
+---
+title: "Homework 1"
+author: "Giulia Rinaldi"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Exercise 1
+
+Consider the case that we know only the number without knowing if it exists or not.
+The sample space with this conditions is $\Omega = \{telephone\ numbers\ composed\ by\ 9\ digits\ with\ the\ first\ two\ 06\} = \{060000000, 060000001,...,069999999\}$. The cardinality of $\Omega$ is $10^7 = 10.000.000$. This number is very high and probably is much more bigger than the landlines in Rome. Anyway, if we define X as the event that the telephone number is correct, $P(X)=\frac{1}{10000000} = 0,0000001$. 
+
+To decrease the sample space, we add the information that the line, when we call, is busy, this means that the telephone number exists. So $\Omega_1 = \{numbers\ of\ telephone\ assigned\ and\ with\ the\ first\ two\ digits\ equal\ to\ 06\}$. Now $P(X|line\ is\ busy)$ is still low but greater than before.
+
+With the fact that the number is busy, we can understand also that the line is active and not only assigned. We find that $\Omega_2 = \{numbers\ of\ telephone\ active\ and\ with\ the\ first\ two\ digits\ equal\ to\ 06\}$.  
+To reduce this set, we should consider the number active only in Rome and not in the close towns with the same prefix 06. Then we have that $P(X|line\ is\ busy\ and\ in\ Rome) < P(X|line\ is\ busy)$.
+To specialize the research, we can consider only the number active in the municipality where the new house is.
+
+In conclusion 
+\[P(X|line\ is\ busy\ and\ in\ a\ specific\ municipality) = \displaystyle \frac{\frac{1}{|\Omega|}}{\frac{|\Omega_2|}{|\Omega|}} = \frac{1}{|\Omega_2|} = \frac{1}{numbers\ of\ active\ line\ in\ the\ municipality\ of\ the\ house}\].
+
+After this reasoning, the probability is lower than the situation without information but not so higher to be more or less sure that the number is the one in the house. If we want to estimate the probability, we can do these considerations:
+In Rome there are around $2.870.000$ inhabitants. 
+In this consideration, we exclude $people\ with\ an\ age\ < 18$, because they can't be the holder of a line. The cardinality of this set is arround $500.000$ inhabitants. 
+In the end, if we consider that there are $15$ municipalities in Rome, with the information found before, the final number of resident that can have a line is around $154.000$. 
+In this amount we must consider the fact tha some people doesn't have a number or some people have more than one. 
+Anyway we are searching an estimation, and with this consideration we can say that $P(X|line\ is\ busy\ and\ in\ a\ specific\ municipality) \approx 6,66e-6$.
+
+## Exercise 2
+
+```{r cars}
+summary(cars)
+
+
+
+```
+
+##Exercise 3
+
+The situation with this description is not the Monty Hall problem. The main wrong feature is the fact that Monty doesn't know where is the prize. This means that the probability that the first door hides the prize is $P(1^{st}\ has\ the\ prize) = \frac{1}{3}$. Instead $P(1^{st}\ has\ a\ goat)= \frac{2}{3}$. 
+
+In the Monty Hall problem, Monty opens a door that hides a goat. So the remaining door has the probability of $\frac{2}{3}$ to be the winner. 
+
+In the situation of the exercise, the earthquake opens a door randomly, but we have new and different information:
+
+1. We know that is always number $3$.
+1. We know that is empty.
+1. Monty doesn't know where's the prize.
+
+The case that the door has a goat, is always number $3$ and Monty doesn't know anything else allows to reduce the possibilities for the goats from $2$ options to $1$, but the contestant can't know where the probability is focused on. Hence, now he can choose beetween two doors that have the same probability to hide the prize. This means that the original game with same probabilities for every door remains, but in this case we just have only $2$ doors.
+
+In conclusion, $P(Winning | change) = P(Winning | not change) = \frac{1}{2}$.
+
+$Calculus$
+
+The sample space of the exercise situation is the following:
+
+$\Omega = \{CG_{1}G_{2}, CG_{2}G_{1}, G_{1}CG_{2}, G_{2}CG_{1}, G_{1}G_{2}C, G_{2}G_{1}C\}$ where $C$ indicates the prize, $G_{1}$ indicates a goat and $G_{2}$ indicates the other goat.
+
+$P(x) = \frac{1}{6} \  \forall \ x \in \Omega$. The events in $\Omega$ are disjoint.
+
+When the earthquake opens the door 3 and reveals that it hides a goat, the sample space becomes:
+
+$\bar{\Omega} = \{CG_{1}G_{2}, CG_{2}G_{1}, G_{1}CG_{2}, G_{2}CG_{1}\}$.
+
+The probability that the contestant, who chose the first door, wins without changing has this possibilities set:
+
+$(C\ast\ast) = \{CG_{1}G_{2}, CG_{2}G_{1}\}$.
+
+So, $P(C\ast\ast| \bar{\Omega}) = \frac{P(C\ast\ast |\bar{\Omega})}{P(\bar{\Omega})}=\frac{P(\{CG_{1}G_{2}, CG_{2}G_{1}\})}{P(\bar{\Omega})} = \frac{P(\{CG_{1}G_{2}\}) + P(\{CG_{2}G_{1}\})}{\frac{4}{6}} = \frac{\frac{1}{6}+\frac{1}{6}}{\frac{4}{6}} = \frac{1}{2}$.
+
+In the case that the contestant decides to change the door. So now we are looking for the probability of the second door hides a prize. So the interested subset of $\bar{\Omega}$ is:
+
+$(\ast C\ast) = \{G_{1}C G_{2}, G_{2} C G_{1}\}$.
+
+$P(\ast C \ast| \bar{\Omega}) = \frac{P(\ast C \ast |\bar{\Omega})}{P(\bar{\Omega})}=\frac{P(\{G_{1} C G_{2}, G_{2} C G_{1}\})}{P(\bar{\Omega})} = \frac{P(\{G_{1}CG_{2}\}) + P(\{G_{2}CG_{1}\})}{\frac{4}{6}} = \frac{\frac{1}{6}+\frac{1}{6}}{\frac{4}{6}} = \frac{1}{2}$.
+
+In the end, change or not have the same probability to win the prize.
+
+$Code\ of\ the\ Exercise$
+
+```{r}
+switch_win <- 0
+no_switch_win <- 0
+simulation <- 50000
+doors <- c(1,2)
+
+for(i in 1:simulation){
+  
+  door_chosen <- 1
+  door_opened <- 3
+  #The prize is under the door 1 or 2
+  door_prize <- sample(doors,1)
+  
+  doors_available <- doors[-c(door_opened)]
+  
+  #The contestant doesn't change his decision
+  if(door_prize == door_chosen){
+    #number of times that if the contestant doesn't change, and his door hides the prize
+    no_switch_win <- no_switch_win + 1 
+  } 
+  #The contestant changes his door
+  new_choice <- doors_available[doors_available != door_chosen][1]
+  if(new_choice == door_prize){
+    #number of times that the contestant win after the changement of the door
+    switch_win = switch_win + 1
+  }
+}
+
+cat("The average that the contestant doesn't change and he wins ", no_switch_win/simulation, fill = TRUE)
+cat("The average that the contestant changes and he wins ", switch_win/simulation, fill = TRUE)
+
+```
+
+We can see that more or less the simulation produce a probability around $\frac{1}{2}$ in both of the case. So the decision of changing or mantaing doesn't make a difference.
+
+$Code\ of\ Monty\ Hall\ Problem$
+
+
+```{r}
+switch_win <- 0
+no_switch_win <- 0
+simulation <- 5000
+doors <- c(1,2,3)
+
+for(i in 1:simulation){
+  
+  door_prize <- sample(doors,1) 
+  door_chosen <- sample(doors,1)
+  
+  #Monty opens the door with a goat
+  options = doors[which(doors != door_prize & doors != door_chosen)]
+  if(length(options) == 1){
+    door_opened = options
+  }else{
+    door_opened <- sample(options, 1)
+  }
+
+  doors_available <- doors[-c(door_opened)]
+
+  #The contestant doesn't change his decision
+  if(door_prize == door_chosen){
+    #number of times that if the contestant doesn't change, and his door hides the prize
+    no_switch_win <- no_switch_win + 1 
+  } 
+  #The contestant changes his door
+  new_choice <- doors_available[doors_available != door_chosen][1]
+  if(new_choice == door_prize){
+    #number of times that the contestant win after the changement of the door
+    switch_win = switch_win + 1
+  }
+  
+}
+
+cat("The average that the contestant doesn't change and he wins ", no_switch_win/simulation, fill = TRUE)
+cat("The average that the contestant changes and he wins ", switch_win/simulation, fill = TRUE)
+
+
+```
+
+The probability to mantain the same door is $\frac{1}{3}$, instead if the contestant would change, the probability of winning is equal to $\frac{2}{3}$.
+
+##Exercise 4
+
+##4.2
+
+This is the code to create the sequence $X_{n+1}$.
+```{r}
+tent <- function(x){
+  if(x <= 1/2){
+    return(2*x)
+  }else{
+    return(2*(1-x))
+  }
+}
+
+x_0 = runif(1, 0, 1)
+seq = c()
+for(x in 1:100){
+  rs = tent(x_0)
+  seq = c(seq, rs)
+  x_0 = rs
+}
+
+par(mfrow=c(1,2))
+plot(seq, ylab = 'Tent Sequence', col = 'red', type = 'l')
+plot(runif(100,0,1), ylab = 'Uniform', col = 'yellow', type = 'l')
+
+
+```
+
+\[\text{If we see the plot of the sequence and the plot of $100$ uniform, we can see that they have the same behaviour, but at the certain point, the first one reaches $0$.}\]
+
+##4.3
+
+If we consider $x_0 = \frac{1}{2^k}$, the general behavior of the sequence when we apply the tent function, is the following:
+
+\begin{equation*}
+\{X_n\} = \begin{cases}
+\frac{1}{2^{n-k}} & \text{if $n \in [0,k], n \in \mathbb{N}$} \\
+0 & \text{if $n > k$}
+\end{cases}
+\end{equation*}
+
+So, if $n \gg k$ then we will have a sequence with $n -k$ $0$'s.
+
+
